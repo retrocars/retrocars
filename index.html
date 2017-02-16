@@ -1,1 +1,40 @@
-
+<html>
+<style>
+    div.image{
+        position: absolute;
+    }   
+    
+</style>
+<canvas id='platform' width='200' height='150' style='border:1px solid #d3d3d3'></canvas>
+<script>
+    function moveRight(){
+        var move = parseInt(localStorage.getItem('move'));
+        var line = parseInt(localStorage.getItem('line'));
+        move = move +25;
+        line = line +25;
+        localStorage.setItem('move', move);
+        localStorage.setItem('line', line);
+        
+    }
+    function moveLeft(){
+        var move = parseInt(localStorage.getItem('move'));
+        var line = parseInt(localStorage.getItem('line'));
+        move = move -25;
+        line = line -25;
+        localStorage.setItem('move', move);
+        localStorage.setItem('line', line);
+    }
+    function draw(){
+        var move = parseInt(localStorage.getItem('move'));
+        var line = parseInt(localStorage.getItem('line'));
+        var c = document.getElementById('platform');
+        var ctx = c.getContext('2d');
+        ctx.moveTo(move, 130);
+        ctx.lineTo(line, 130);
+    }
+    var move = 25;
+    var line = 0;
+    localStorage.setItem('move', move);
+    localStorage.setItem('line', line);
+</script>
+</html>
