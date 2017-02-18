@@ -5,8 +5,13 @@
     }   
     
 </style>
-<canvas id='platform' width='200' height='150' style='border:1px solid #d3d3d3'></canvas>
+<canvas id='platform' width='200' height='150' style='border:1px solid #d3d3d3;'>Your browser does not support the HTML5 canvas tag.</canvas>
+<button onclick='moveLeft()'>Move Left</button>
+<button onclick='moveRight()'>Move Right</button>
 <script>
+    function bombs(){
+        
+    }
     function moveRight(){
         var move = parseInt(localStorage.getItem('move'));
         var line = parseInt(localStorage.getItem('line'));
@@ -14,6 +19,7 @@
         line = line +25;
         localStorage.setItem('move', move);
         localStorage.setItem('line', line);
+        draw();
         
     }
     function moveLeft(){
@@ -23,6 +29,7 @@
         line = line -25;
         localStorage.setItem('move', move);
         localStorage.setItem('line', line);
+        draw();
     }
     function draw(){
         var move = parseInt(localStorage.getItem('move'));
@@ -31,7 +38,9 @@
         var ctx = c.getContext('2d');
         ctx.moveTo(move, 130);
         ctx.lineTo(line, 130);
+        ctx.stroke();
     }
+    draw();
     var move = 25;
     var line = 0;
     localStorage.setItem('move', move);
