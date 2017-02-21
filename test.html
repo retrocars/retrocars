@@ -1,0 +1,136 @@
+<html>
+<style>
+    div.image{
+        position: absolute;
+    }   
+    
+</style>
+<canvas id='platform' width='200' height='150' style='border:1px solid #000000;'>Your browser does not support the HTML5 canvas tag.</canvas>
+<button onclick='moveLeft()'>Move Left</button>
+<button onclick='moveRight()'>Move Right</button>
+<script>
+    //Starting of creating vars
+    var runBefore = 0;
+    var cameFromPlayer = 0;
+    var spawnBefore = 0;
+    var start = 1;
+    
+    var c = document.getElementById('platform');
+    var ctx = c.getContext('2d');
+
+    var canvasConfig = {
+        width: 200,
+        height: 150
+    };
+
+    var player = {
+        x: 0,
+        y: 130,
+        width: 25,
+        color: 'red'
+    };
+    
+    var bomb = {
+        x: 0,
+        y: 0,
+        height: 2,
+        color: 'green'
+    };
+    if(start == 1){
+        var time = 1000;
+    }
+    //end of creating vars
+    
+    
+    function spawnInSpot(){
+        if(spawnBefore >= 1){
+            var numberOfX = bomb.x;
+            bomb.x -= numberOfX;
+            bomb.x += Math.floor((Math.random() * 200) + 1);
+        }
+        else if(spawnBefore == 0){
+            bomb.x += Math.floor((Math.random() * 200) + 1);
+            spawnBefore = spawnBefore +1;
+        }
+    }
+    
+    function bombTimer(){
+        var timer;
+        timer = setInterval(drawBombs, time);
+    
+    }
+    
+    function drawBombs(){
+        if(runBefore == 0){
+            spawnInSpot();
+        }
+        if(runBefore > 0){
+            clearBombs();
+            bomb.y += 75;
+        }
+        if(runBefore == 0){
+             runBefore = runBefore +1;
+        }
+        time = time + 6000;
+        ctx.beginPath();
+        ctx.moveTo(bomb.x, bomb.y);
+        ctx.lineTo(bomb.x + bomb.height, bomb.y);
+        ctx.strokeStyle = bomb.color;
+        ctx.stroke();
+        draw();
+        bombTimer();
+    }
+    
+    function clearBombs(){
+        ctx.clearRect(0, 0, canvasConfig.width, canvasConfig.height);
+        drawBombs();
+    }
+    
+    //Moves player
+    function drawPlayer(ctx, player) {
+        ctx.beginPath();
+        ctx.moveTo(player.x, player.y);
+        ctx.lineTo(player.x + player.width, player.y);
+        ctx.strokeStyle = player.color;
+        ctx.stroke();
+    }
+
+    function clear(ctx, canvasConfig) {
+        ctx.clearRect(0, 125, canvasConfig.width, canvasConfig.height); 
+    }
+
+    function draw() {
+        if(cameFromPlayer == 1){
+            cameFromPlayer = cameFromPlayer -1;
+            clear(ctx, canvasConfig);
+            drawPlayer(ctx, player);
+        }
+        else{
+            drawPlayer(ctx, player);
+        }
+    }
+
+    function moveLeft() {
+    		if (player.x <= 0) {
+        		return;
+        }
+        
+        player.x -= player.width;
+        cameFromPlayer = cameFromPlayer +1;
+        draw();
+    }
+
+    function moveRight() {
+    		if (player.x + player.width >= canvasConfig.width) {
+        		return;
+        }
+        
+        player.x += player.width;
+        cameFromPlayer = cameFromPlayer +1;
+        draw();
+    }
+    //Ends moving players
+    draw();
+    bombTimer();
+</script>
+</html>
