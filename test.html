@@ -17,12 +17,10 @@
     
     var c = document.getElementById('platform');
     var ctx = c.getContext('2d');
-
     var canvasConfig = {
         width: 200,
         height: 150
     };
-
     var player = {
         x: 0,
         y: 130,
@@ -54,10 +52,21 @@
         }
     }
     
+    //start of moving bombs
     function bombTimer(){
         var timer;
-        timer = setInterval(drawBombs, time);
+        timer = setInterval(checkSpot, time);
     
+    }
+    
+    function checkSpot(){
+        if(bomb.y == 130){
+            
+        }
+        
+        if(bomb.y != 130){
+            drawBombs();
+        }
     }
     
     function drawBombs(){
@@ -66,7 +75,7 @@
         }
         if(runBefore > 0){
             clearBombs();
-            bomb.y += 75;
+            bomb.y += 10;
         }
         if(runBefore == 0){
              runBefore = runBefore +1;
@@ -85,7 +94,7 @@
         ctx.clearRect(0, 0, canvasConfig.width, canvasConfig.height);
         drawBombs();
     }
-    
+    //end Of move bomb
     //Moves player
     function drawPlayer(ctx, player) {
         ctx.beginPath();
@@ -94,11 +103,9 @@
         ctx.strokeStyle = player.color;
         ctx.stroke();
     }
-
     function clear(ctx, canvasConfig) {
         ctx.clearRect(0, 125, canvasConfig.width, canvasConfig.height); 
     }
-
     function draw() {
         if(cameFromPlayer == 1){
             cameFromPlayer = cameFromPlayer -1;
@@ -109,7 +116,6 @@
             drawPlayer(ctx, player);
         }
     }
-
     function moveLeft() {
     		if (player.x <= 0) {
         		return;
@@ -119,7 +125,6 @@
         cameFromPlayer = cameFromPlayer +1;
         draw();
     }
-
     function moveRight() {
     		if (player.x + player.width >= canvasConfig.width) {
         		return;
