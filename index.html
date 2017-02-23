@@ -5,45 +5,60 @@
     }   
     
 </style>
-<canvas id='platform' width='200' height='150' style='border:1px solid #d3d3d3;'>Your browser does not support the HTML5 canvas tag.</canvas>
+<canvas id='platform' width='200' height='150' style='border:1px solid #000000;'>Your browser does not support the HTML5 canvas tag.</canvas>
 <button onclick='moveLeft()'>Move Left</button>
 <button onclick='moveRight()'>Move Right</button>
 <script>
-    function bombs(){
-        
-    }
-    function moveRight(){
-        var move = parseInt(localStorage.getItem('move'));
-        var line = parseInt(localStorage.getItem('line'));
-        move = move +25;
-        line = line +25;
-        localStorage.setItem('move', move);
-        localStorage.setItem('line', line);
-        draw();
-        
-    }
-    function moveLeft(){
-        var move = parseInt(localStorage.getItem('move'));
-        var line = parseInt(localStorage.getItem('line'));
-        move = move -25;
-        line = line -25;
-        localStorage.setItem('move', move);
-        localStorage.setItem('line', line);
-        draw();
-    }
-    function draw(){
-        var move = parseInt(localStorage.getItem('move'));
-        var line = parseInt(localStorage.getItem('line'));
-        var c = document.getElementById('platform');
-        var ctx = c.getContext('2d');
-        ctx.moveTo(move, 130);
-        ctx.lineTo(line, 130);
+    var c = document.getElementById('platform');
+    var ctx = c.getContext('2d');
+
+		var canvasConfig = {
+    		width: 200,
+        height: 150
+    };
+
+    var player = {
+        x: 0,
+        y: 130,
+        width: 25,
+        color: 'red'
+    };
+
+    function drawPlayer(ctx, player) {
+        ctx.beginPath();
+        ctx.moveTo(player.x, player.y);
+        ctx.lineTo(player.x + player.width, player.y);
+        ctx.strokeStyle = player.color;
         ctx.stroke();
     }
+
+    function clear(ctx, canvasConfig) {
+        ctx.clearRect(0, 0, canvasConfig.width, canvasConfig.height); 
+    }
+
+    function draw() {
+        clear(ctx, canvasConfig);
+        drawPlayer(ctx, player);
+    }
+
+    function moveLeft() {
+    		if (player.x <= 0) {
+        		return;
+        }
+        
+        player.x -= player.width;
+        draw();
+    }
+
+    function moveRight() {
+    		if (player.x + player.width >= canvasConfig.width) {
+        		return;
+        }
+        
+        player.x += player.width;
+        draw();
+    }
+    
     draw();
-    var move = 25;
-    var line = 0;
-    localStorage.setItem('move', move);
-    localStorage.setItem('line', line);
 </script>
 </html>
