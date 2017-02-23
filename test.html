@@ -15,6 +15,7 @@
     var spawnBefore = 0;
     var start = 1;
     
+    
     var c = document.getElementById('platform');
     var ctx = c.getContext('2d');
     var canvasConfig = {
@@ -25,6 +26,7 @@
         x: 0,
         y: 130,
         width: 25,
+        moved: 0,
         color: 'red'
     };
     
@@ -32,6 +34,7 @@
         x: 0,
         y: 0,
         height: 2,
+        moved: 0,
         color: 'green'
     };
     if(start == 1){
@@ -61,16 +64,66 @@
     
     function checkSpot(){
         if(bomb.y == 130){
-            
+            if(bomb.moved == player.moved){
+                
+            }
+            else if(bomb.moved != player.moved){
+                bomb.moved -= bomb.moved;
+                player.moved -= player.moved;
+                
+            }
         }
         
         if(bomb.y != 130){
             drawBombs();
         }
     }
+        
+    function spotOfBomb(){
+        if(bomb.x >= 24){
+            bomb.moved += 1;
+        }
+        else if(bomb.x >= 25){
+                if(bomb.x <= 49){
+                    bomb.moved += 2;
+            }
+        }
+        else if(bomb.x >= 50){
+                if(bomb.x <= 74){
+                    bomb.moved += 3;
+            }
+        }
+        else if(bomb.x >= 75){
+                if(bomb.x <= 99){
+                    bomb.moved += 4;
+            }
+        }
+        else if(bomb.x >= 100){
+                if(bomb.x <= 124){
+                    bomb.moved += 5;
+            }
+        }
+        else if(bomb.x >= 125){
+                if(bomb.x <= 149){
+                    bomb.moved += 6;
+            }
+        }
+        else if(bomb.x >= 150){
+                if(bomb.x <= 174){
+                    bomb.moved += 7;
+            }
+        }
+        else if(bomb.x >= 175){
+                if(bomb.x <= 200){
+                    bomb.moved += 8;
+            }
+        }
+        
+    }
     
     function drawBombs(){
         if(runBefore == 0){
+            
             spawnInSpot();
         }
         if(runBefore > 0){
@@ -120,7 +173,7 @@
     		if (player.x <= 0) {
         		return;
         }
-        
+        player.moved -= 1;
         player.x -= player.width;
         cameFromPlayer = cameFromPlayer +1;
         draw();
@@ -129,7 +182,7 @@
     		if (player.x + player.width >= canvasConfig.width) {
         		return;
         }
-        
+        player.moved += 1;
         player.x += player.width;
         cameFromPlayer = cameFromPlayer +1;
         draw();
