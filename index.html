@@ -16,6 +16,10 @@
     var spawnBefore = 0;
     var start = 1;
     var score = 0;
+    var playerMoved = 1;
+    var bombMoved = 0;
+    localStorage.setItem('playerMoved', playerMoved);
+    localStorage.setItem('score', score);
     
     document.getElementById("score").innerHTML = score;
     
@@ -29,7 +33,6 @@
         x: 0,
         y: 130,
         width: 25,
-        moved: 0,
         color: 'red'
     };
     
@@ -37,7 +40,6 @@
         x: 0,
         y: 0,
         height: 2,
-        moved: 0,
         color: 'green'
     };
     if(start == 1){
@@ -67,18 +69,31 @@
     
     function checkSpot(){
         if(bomb.y == 130){
-            if(bomb.moved == player.moved){
+            var playerMoved = parseInt(localStorage.getItem('playerMoved'));
+            spotOfBomb();
+            if(bombMoved == playerMoved){
+                var score = parseInt(localStorage.getItem('score'));
+                bombMoved = bombMoved -bombMoved;
+                playerMoved = playerMoved -playerMoved;
                 score = score + 100;
+                localStorage.setItem('score', score);
                 document.getElementById("score").innerHTML = score;
-                var BPOY = bomb.y;
-                bomb.y = bomb.y - BPOY;
+                bomb.y = bomb.y - 130;
                 runBefore = runBefore - 1;
                 drawBombs();
                 
             }
-            else if(bomb.moved != player.moved){
-                bomb.moved -= bomb.moved;
-                player.moved -= player.moved;
+            if(bombMoved != playerMoved){
+                var score = parseInt(localStorage.getItem('score'));
+                bombMoved = bombMoved -bombMoved;
+                playerMoved = playerMoved -playerMoved;
+                runBefore = runBefore - 1;
+                bomb.y = bomb.y - 130;
+                var FinalScore = score;
+                score = score - FinalScore;
+                localStorage.setItem('score', score);
+                document.getElementById("score").innerHTML = score;
+                bombTimer();
                 
             }
         }
@@ -89,42 +104,44 @@
     }
         
     function spotOfBomb(){
-        if(bomb.x >= 24){
-            bomb.moved += 1;
-        }
-        else if(bomb.x >= 25){
-                if(bomb.x <= 49){
-                    bomb.moved += 2;
+        if(bomb.x >= 0){
+            if(bomb.x <=24){
+                bombMoved = bombMoved +1;
             }
         }
-        else if(bomb.x >= 50){
-                if(bomb.x <= 74){
-                    bomb.moved += 3;
+        if(bomb.x >= 25){
+            if(bomb.x <= 49){
+                bombMoved = bombMoved +2;
             }
         }
-        else if(bomb.x >= 75){
-                if(bomb.x <= 99){
-                    bomb.moved += 4;
+        if(bomb.x >= 50){
+            if(bomb.x <= 74){
+                bombMoved = bombMoved +3;
             }
         }
-        else if(bomb.x >= 100){
-                if(bomb.x <= 124){
-                    bomb.moved += 5;
+        if(bomb.x >= 75){
+            if(bomb.x <= 99){
+                bombMoved = bombMoved +4;
             }
         }
-        else if(bomb.x >= 125){
-                if(bomb.x <= 149){
-                    bomb.moved += 6;
+        if(bomb.x >= 100){
+            if(bomb.x <= 124){
+                bombMoved = bombMoved +5;
             }
         }
-        else if(bomb.x >= 150){
-                if(bomb.x <= 174){
-                    bomb.moved += 7;
+        if(bomb.x >= 125){
+            if(bomb.x <= 149){
+                bombMoved = bombMoved +6;
             }
         }
-        else if(bomb.x >= 175){
-                if(bomb.x <= 200){
-                    bomb.moved += 8;
+        if(bomb.x >= 150){
+            if(bomb.x <= 174){
+                bombMoved = bombMoved +7;
+            }
+        }
+        if(bomb.x >= 175){
+            if(bomb.x <= 200){
+                bombMoved = bombMoved +8;
             }
         }
         
@@ -180,7 +197,11 @@
     		if (player.x <= 0) {
         		return;
         }
-        player.moved -= 1;
+        if(playerMoved != 1){
+            var playerMoved = parseInt(localStorage.getItem('playerMoved'));
+            playerMoved = playerMoved -1;
+            localStorage.setItem('playerMoved', playerMoved);
+        }
         player.x -= player.width;
         cameFromPlayer = cameFromPlayer +1;
         draw();
@@ -189,7 +210,11 @@
     		if (player.x + player.width >= canvasConfig.width) {
         		return;
         }
-        player.moved += 1;
+        if(playerMoved != 8){
+            var playerMoved = parseInt(localStorage.getItem('playerMoved'));
+            playerMoved = playerMoved +1;
+            localStorage.setItem('playerMoved', playerMoved);
+        }
         player.x += player.width;
         cameFromPlayer = cameFromPlayer +1;
         draw();
